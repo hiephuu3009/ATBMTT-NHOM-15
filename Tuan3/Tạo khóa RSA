@@ -1,0 +1,70 @@
+#include<iostream>
+#include<string>
+#define ll long long
+using namespace std;
+ll gcd(ll a, ll b){
+	while(b!=0){
+		ll t=b;
+		b=a%b;
+		a=t;
+	}
+	return a;
+}
+bool testNT(ll n){
+	if(n<2) return false;
+	for(ll i=2; i*i<=n; i++){
+	   	if(n%i==0)	return false;
+	}
+	return true;
+}
+ll nghichDaoMod(ll e, ll phi){
+	ll tt=0, ts=1;
+	ll rt=phi, rs=e;
+	while(rs != 0){
+		ll q=rt/rs;
+		ll temp=ts;
+		ts=tt-q*ts;
+		tt=temp;
+		temp=rs;
+		rs=rt-q*rs;
+		rt=temp;
+	}
+	if(rt>1) return -1;
+	if(rt<0) tt+=phi;
+	return tt;
+}
+void extendKey(){
+	ll p, q;
+	do{
+		cout<<"Nhap so nguyen to p: ";
+		cin>>p;
+		cout<<"Nhap so nguyen to q: ";
+		cin>>q;
+		if(!testNT(p)||!testNT(q)||p==q){
+			cout<<"p hoac q khong phai so nguyen to, Nhap lai: ";
+		}
+	}
+	while(!testNT(p)||!testNT(q)||p==q);
+	ll n=p*q;
+	ll phi=(p-1)*(q-1);
+	ll e; 
+	do{
+		cout<<"Nhap so nguyen e: ";
+		cin>>e;
+		if(1>=e||e>=phi||gcd(e, phi)!=1){
+			cout<<"Dieu kien khong thoa man, nhap lai: ";
+		}
+	
+	}
+	while(e<=1||e>=phi||gcd(e, phi)!=1);
+	ll d=nghichDaoMod(e, phi);
+	if(d<0){
+		d+=phi;
+	}
+		cout<<"Public key kp={e,n}= {"<<e<<","<<n<<"}"<<endl;
+		cout<<"Private key ks={d,n}= {"<<d<<","<<n<<"}"<<endl;
+}
+int main(){
+	extendKey();
+	return 0;
+}
